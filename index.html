@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Harmonana: Harmony Analysis</title>
+	<link rel="stylesheet" type="text/css" href="harmonana.css">
+
+</head>
+<body>
+
+<!--Create a table of options for voice selection-->
+	<table>
+		<tbody>
+			<tr id="SOPRANO">
+				<td><label for="soprano">Soprano: </label></td>
+				<td><input type="radio" name="voice" id="soprano" checked></td>
+			</tr>
+			<tr id="ALTO">
+				<td><label for="alto">Alto: </label></td>
+				<td><input type="radio" name="voice" id="alto"></td>
+			</tr>
+			<tr id="TENOR">
+				<td><label for="tenor">Tenor: </label></td>
+				<td><input type="radio" name="voice" id="tenor"></td>
+			</tr>
+			<tr id="BASS">
+				<td><label for="bass">Bass: </label></td>
+				<td><input type="radio" name="voice" id="bass"></td>
+			</tr>
+		</tbody>
+	</table>
+
+
+<!-- container used for VexFlow -->
+	<div id="boo"></div>
+	
+
+<!--Call the Javascript file-->	
+	<script src="releases/vexflow-min.js"></script>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+
+
+<!--Javascript starts here-->	
+	<script type="text/javascript">
+		VF = Vex.Flow;
+
+		const WIDTH = 200;
+		var S_COLOR = "red";
+		var A_COLOR = "blue";
+		var T_COLOR = "green";
+		var B_COLOR = "orange";
+
+		// Create an SVG renderer and attach it to the DIV element named "boo".
+		var div = document.getElementById("boo");
+		var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+
+		// Configure the rendering context.
+		renderer.resize(820, 300);
+
+		// Drawing context:
+		var context = renderer.getContext();
+		context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+
+		// Create a stave of width 400 at position 10, 40 on the canvas.
+		var treble_stave_1 = new VF.Stave(10, 40, WIDTH);
+		var bass_stave_1 = new VF.Stave(10, 100, WIDTH);
+
+		var treble_stave_2 = new VF.Stave(210, 40, WIDTH);
+		var bass_stave_2 = new VF.Stave(210, 100, WIDTH);
+
+		var treble_stave_3 = new VF.Stave(410, 40, WIDTH);
+		var bass_stave_3 = new VF.Stave(410, 100, WIDTH);
+
+		var treble_stave_4 = new VF.Stave(610, 40, WIDTH);
+		var bass_stave_4 = new VF.Stave(610, 100, WIDTH);
+
+
+		// Add a clef and time signature.
+		treble_stave_1.addClef("treble").addTimeSignature("4/4");
+		bass_stave_1.addClef("bass").addTimeSignature("4/4");	
+
+		// Connect it to the rendering context.
+		treble_stave_1.setContext(context).draw();
+		bass_stave_1.setContext(context).draw();
+
+		treble_stave_2.setContext(context).draw();
+		bass_stave_2.setContext(context).draw();
+
+		treble_stave_3.setContext(context).draw();
+		bass_stave_3.setContext(context).draw();
+
+		treble_stave_4.setContext(context).draw();
+		bass_stave_4.setContext(context).draw();
+
+
+
+// ----------------------------------------------------------------------
+// Anthony's code for referencing adding multiple whole notes per measure
+// ----------------------------------------------------------------------
+
+		// MEASURE_1
+		// Add notes
+		// var s_notes = [new VF.StaveNote({clef: "treble", keys: ["g/5"], duration: "w"})];
+		// var a_notes = [new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "w"})];
+		// var t_notes = [new VF.StaveNote({clef: "bass", keys: ["e/3"], duration: "w"})];
+		// var b_notes = [new VF.StaveNote({clef: "bass", keys: ["c/1"], duration: "w"})];
+
+		// Add color
+		// s_notes[0].setStyle({ fillStyle: S_COLOR});
+		// a_notes[0].setStyle({ fillStyle: A_COLOR});
+		// t_notes[0].setStyle({ fillStyle: T_COLOR});
+		// b_notes[0].setStyle({ fillStyle: B_COLOR});
+
+		// Create voices
+		// var s_voice = new VF.Voice({num_beats: 4, beat_value: 4});
+		// s_voice.addTickables(s_notes);
+		// var a_voice = new VF.Voice({num_beats: 4, beat_value: 4});
+		// a_voice.addTickables(a_notes);
+		// var t_voice = new VF.Voice({num_beats: 4, beat_value: 4});
+		// t_voice.addTickables(t_notes);
+		// var b_voice = new VF.Voice({num_beats: 4, beat_value: 4});
+		// b_voice.addTickables(b_notes);
+
+		// // Format notes
+		// var s_formatter = new VF.Formatter().joinVoices([s_voice]).format([s_voice], WIDTH);
+		// var a_formatter = new VF.Formatter().joinVoices([a_voice]).format([a_voice], WIDTH);
+		// var t_formatter = new VF.Formatter().joinVoices([t_voice]).format([t_voice], WIDTH);
+		// var b_formatter = new VF.Formatter().joinVoices([b_voice]).format([b_voice], WIDTH);
+
+		// // Draw.
+		// s_voice.draw(context, treble_stave_1);
+		// a_voice.draw(context, treble_stave_1);
+		// t_voice.draw(context, treble_stave_1);
+		// b_voice.draw(context, treble_stave_1);
+
+
+		// // MEASURE_2
+		// // Add notes
+		// var s_notes = [new VF.StaveNote({clef: "treble", keys: ["c/5"], duration: "w"})];
+		// var a_notes = [new VF.StaveNote({clef: "treble", keys: ["a/4"], duration: "w"})];
+		// var t_notes = [new VF.StaveNote({clef: "bass", keys: ["a/3"], duration: "w"})];
+		// var b_note_2 = new VF.StaveNote({clef: "bass", keys: ["f/1"], duration: "w"}); // copies note to variable for analysis
+		// var b_notes = [b_note_2];
+
+		// // Add color
+		// s_notes[0].setStyle({ fillStyle: S_COLOR});
+		// a_notes[0].setStyle({ fillStyle: A_COLOR});
+		// t_notes[0].setStyle({ fillStyle: T_COLOR});
+		// b_notes[0].setStyle({ fillStyle: B_COLOR});
+
+		// // Create voices
+		// s_voice = new VF.Voice({num_beats: 4, beat_value: 4});
+		// s_voice.addTickables(s_notes);
+		// a_voice = new VF.Voice({num_beats: 4, beat_value: 4});
+		// a_voice.addTickables(a_notes);
+		// t_voice = new VF.Voice({num_beats: 4, beat_value: 4});
+		// t_voice.addTickables(t_notes);
+		// b_voice = new VF.Voice({num_beats: 4, beat_value: 4});
+		// b_voice.addTickables(b_notes);
+
+		// // Format notes
+		// var s_formatter = new VF.Formatter().joinVoices([s_voice]).format([s_voice], WIDTH);
+		// var a_formatter = new VF.Formatter().joinVoices([a_voice]).format([a_voice], WIDTH);
+		// var t_formatter = new VF.Formatter().joinVoices([t_voice]).format([t_voice], WIDTH);
+		// var b_formatter = new VF.Formatter().joinVoices([b_voice]).format([b_voice], WIDTH);
+
+		// // Draw.
+		// s_voice.draw(context, treble_stave_2);
+		// a_voice.draw(context, treble_stave_2);
+		// t_voice.draw(context, treble_stave_2);
+		// b_voice.draw(context, treble_stave_2);
+
+
+// Deb's code
+
+var notes = [
+        // A quarter C note:
+        new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "w" })
+        ];
+
+        // Create a voice in 4/4 and add above notes:
+        // Create a contect group so it can be deleted when we want to redraw notes:
+        var group = context.openGroup();
+        // Draw your measure as you normally would:
+        var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+        voice.addTickables(notes);
+        // Format and justify the notes to 400 pixels:
+        var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 750);
+        // Render voice
+        // voice.draw(context, treble_stave_1);
+        // Then close the group:
+        context.closeGroup();
+        // And when you want to delete it, do this:
+        // context.svg.removeChild(group);
+
+        // Get key based on Y poisition of user click:
+        function getKeyFromScreenY( y ) {
+            var key = null;
+
+            // var topLineTopY  = stave.getTopLineTopY();
+            if (y < 76) {
+                key = "a/5";
+            } else if (y >= 76 & y <= 79) {
+                key = "g/5";
+            } else if (y >= 80 & y <= 83) {
+                key = "f/5";
+            } else if (y >= 84 & y <= 87) {
+                key = "e/5";
+            } else if (y >= 88 & y <= 91) {
+                key = "d/5";
+            } else if (y >= 92 & y <= 95) {
+                key = "c/5";
+            } else if (y >= 96 & y <= 100) {
+                key = "b/4";
+            } else if (y >= 101 & y <= 106) {
+                key = "a/4";
+            } else if (y >= 107 & y <= 111) {
+                key = "g/4";
+            } else if (y >= 112 & y <= 116) {
+                key = "f/4";
+            } else if (y >= 117 & y <= 121) {
+                key = "e/4";
+            } else if (y >= 122 & y <= 126) {
+                key = "d/4";
+            } else if (y >= 127 & y <= 131) {
+                key = "c/4";
+            } else if (y >= 132 & y <= 136) {
+                key = "b/3";
+            } else if (y >= 137 & y <= 141) {
+                key = "a/3";
+            } else if (y >= 142 & y <= 146) {
+                key = "g/3";
+            } else if (y >= 147 & y <= 151) {
+                key = "f/3";
+            } else if (y >= 152 & y <= 156) {
+                key = "e/3";
+            } else if (y >= 157 & y <= 161) {
+                key = "d/3";
+            } else if (y >= 162 & y <= 166) {
+                key = "c/3";
+            } else if (y >= 167 & y <= 171) {
+                key = "b/2";
+            } else if (y >= 172 & y <= 176) {
+                key = "a/2";
+            } else if (y >= 177 & y <= 181) {
+                key = "g/2";
+            } else if (y >= 182 & y <= 186) {
+                key = "f/2";
+            } else if (y >= 187 & y <= 191) {
+                key = "e/2";
+            } else if (y >= 192 & y <= 196) {
+                key = "d/2";
+            } else if (y > 197) {
+                key = "c/2";
+            }
+            return key;
+        }
+
+        function getMeasure( x ) {
+            // determine which of 4 measures you're in based on x position (horizontal)
+        	var measure = treble_stave_1;
+
+        	if (x > 10 & x < 210) {
+        		measure = treble_stave_1;
+        	} else if (x >= 210 & x < 410) {
+        		measure = treble_stave_2;
+        	} else if (x >= 410 & x < 610) {
+        		measure = treble_stave_3;
+        	} else if (x >= 610 & x < 810) {
+        		measure = treble_stave_4;
+        	}
+        	return measure;
+      		}
+
+        //  On Vexflow SVG click (content renderer)
+        $("#boo svg").click(function(e){
+            console.log(e);
+            var originalEvent = e.originalEvent;
+
+            if (originalEvent && originalEvent.offsetX && originalEvent.offsetY) {
+                console.log('x: ' + originalEvent.screenX + ' y: ' + originalEvent.screenY);
+                console.log('x: ' + originalEvent.offsetX + ' y: ' + originalEvent.offsetY);
+                console.log(treble_stave_1.getTopLineTopY()); // 79.5 in chrome
+                console.log(treble_stave_1.getNoteStartX()); // 67.9 in Chrome
+                var screenX = originalEvent.screenX;
+                var screenY = originalEvent.screenY;
+                var offsetX = originalEvent.offsetX;
+                var offsetY = originalEvent.offsetY;
+                var keyName = getKeyFromScreenY(offsetY);
+                console.log(keyName);
+                var keyArray = [keyName];
+// 
+                var note = new VF.StaveNote({clef: "treble", keys: keyArray, duration: "w" });
+                notes = [note];
+                voice = new VF.Voice({num_beats: 4, beat_value: 4});
+
+                // Add color to note
+                if (document.getElementById('soprano').checked == true) {
+                	note.setStyle({ fillStyle: S_COLOR});
+                	console.log('Soprano note color changed');
+                } else if (document.getElementById('alto').checked == true) {
+                	note.setStyle({ fillStyle: A_COLOR});
+                	console.log('Alto note color changed');
+               	} else if (document.getElementById('tenor').checked == true) {
+                	note.setStyle({ fillStyle: T_COLOR});
+                	console.log('Tenor note color changed');
+                } else if (document.getElementById('bass').checked == true) {
+                	note.setStyle({ fillStyle: B_COLOR});
+                	console.log('Bass note color changed');
+                }
+
+                voice.addTickables(notes);
+                var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+
+                // remove previous group:
+                context.svg.removeChild(group);
+                group = context.openGroup();
+                voice.draw(context, getMeasure(offsetX));
+                context.closeGroup();
+            }
+        });
+
+        
+
+
+
+
+	</script>
+	<button id="Analyze" onclick="document.getElementById('Output').innerHTML='Success!'"">Analyze</button>
+	<div id="Output"></div>
+</body>
+</html>
