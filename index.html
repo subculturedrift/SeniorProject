@@ -43,11 +43,35 @@
 	<script type="text/javascript">
 		VF = Vex.Flow;
 
+		// Width of each measure
 		const WIDTH = 200;
+
+		// Variables for assigning colors to voices
 		var S_COLOR = "red";
 		var A_COLOR = "blue";
 		var T_COLOR = "green";
 		var B_COLOR = "orange";
+
+		// Values for analysis and for determining if group should be removed (value != null)
+		var s1 = null;
+		var s2 = null;
+		var s3 = null;
+		var s4 = null;
+
+		var a1 = null;
+		var a2 = null;
+		var a3 = null;
+		var a4 = null;
+
+		var t1 = null;
+		var t2 = null;
+		var t3 = null;
+		var t4 = null;
+
+		var b1 = null;
+		var b2 = null;
+		var b3 = null;
+		var b4 = null;
 
 		// Create an SVG renderer and attach it to the DIV element named "boo".
 		var div = document.getElementById("boo");
@@ -180,6 +204,27 @@ var notes = [
         // Create a voice in 4/4 and add above notes:
         // Create a contect group so it can be deleted when we want to redraw notes:
         var group = context.openGroup();
+
+        var group_s1 = null;
+        var group_s2 = null;
+        var group_s3 = null;
+        var group_s4 = null;
+
+        var group_a1 = null;
+        var group_a2 = null;
+        var group_a3 = null;
+        var group_a4 = null;
+
+        var group_t1 = null;
+        var group_t2 = null;
+        var group_t3 = null;
+        var group_t4 = null;
+
+        var group_b1 = null;
+        var group_b2 = null;
+        var group_b3 = null;
+        var group_b4 = null;
+
         // Draw your measure as you normally would:
         var voice = new VF.Voice({num_beats: 4, beat_value: 4});
         voice.addTickables(notes);
@@ -271,10 +316,20 @@ var notes = [
         	return measure;
       		}
 
+
+        function analyzeNotes() {
+            // Build analysis code here.
+        	var output = "test";
+        	return output;
+      	}
+
+
+
         //  On Vexflow SVG click (content renderer)
         $("#boo svg").click(function(e){
             console.log(e);
             var originalEvent = e.originalEvent;
+            var activeGroup = null;
 
             if (originalEvent && originalEvent.offsetX && originalEvent.offsetY) {
                 console.log('x: ' + originalEvent.screenX + ' y: ' + originalEvent.screenY);
@@ -293,7 +348,7 @@ var notes = [
                 notes = [note];
                 voice = new VF.Voice({num_beats: 4, beat_value: 4});
 
-                // Add color to note
+                // Add color to note based on voice
                 if (document.getElementById('soprano').checked == true) {
                 	note.setStyle({ fillStyle: S_COLOR});
                 	console.log('Soprano note color changed');
@@ -308,6 +363,71 @@ var notes = [
                 	console.log('Bass note color changed');
                 }
 
+                // Assign value to note variables
+                if (document.getElementById('soprano').checked == true) {
+                	if (getMeasure(offsetX) == treble_stave_1) {
+                		s1 = keyName;
+                		activeGroup = group_s1;
+                		console.log('s1 changed to ' + keyName);
+                	} else if (getMeasure(offsetX) == treble_stave_2) {
+                		s2 = keyName;
+                		activeGroup = group_s2;
+						console.log('s2 changed to ' + keyName);
+                	} else if (getMeasure(offsetX) == treble_stave_3) {
+                		s3 = keyName;
+                		activeGroup = group_s2;
+                		console.log('s3 changed to ' + keyName);
+                	} else if (getMeasure(offsetX) == treble_stave_4) {
+                		s4 = keyName;
+                		activeGroup = group_s2;
+                		console.log('s4 changed to ' + keyName);
+                	}
+                } else if (document.getElementById('alto').checked == true) {
+                	if (getMeasure(offsetX) == treble_stave_1) {
+                		a1 = keyName;
+                		console.log('a1 changed to ' + keyName);
+                	} else if (getMeasure(offsetX) == treble_stave_2) {
+                		a2 = keyName;
+                		console.log('a2 changed to ' + keyName);
+                	} else if (getMeasure(offsetX) == treble_stave_3) {
+                		a3 = keyName;
+                		console.log('a3 changed to ' + keyName);
+                	} else if (getMeasure(offsetX) == treble_stave_4) {
+                		a4 = keyName;
+                		console.log('a4 changed to ' + keyName);
+                	}
+                } else if (document.getElementById('tenor').checked == true) {
+                	if (getMeasure(offsetX) == treble_stave_1) {
+                		t1 = keyName;
+                		console.log('t1 changed to ' + keyName);
+                	} else if (getMeasure(offsetX) == treble_stave_2) {
+                		t2 = keyName;
+                		console.log('t2 changed to ' + keyName);
+                	} else if (getMeasure(offsetX) == treble_stave_3) {
+                		t3 = keyName;
+                		console.log('t3 changed to ' + keyName);
+                	} else if (getMeasure(offsetX) == treble_stave_4) {
+                		t4 = keyName;
+                		console.log('t4 changed to ' + keyName);
+                	}
+                } else if (document.getElementById('bass').checked == true) {
+                	if (getMeasure(offsetX) == treble_stave_1) {
+                		b1 = keyName;
+                		console.log('b1 changed to ' + keyName);
+                	} else if (getMeasure(offsetX) == treble_stave_2) {
+                		b2 = keyName;
+                		console.log('b2 changed to ' + keyName);
+                	} else if (getMeasure(offsetX) == treble_stave_3) {
+                		b3 = keyName;
+                		console.log('b3 changed to ' + keyName);
+                	} else if (getMeasure(offsetX) == treble_stave_4) {
+                		b4 = keyName;
+                		console.log('b4 changed to ' + keyName);
+                	}
+                }
+
+
+
                 voice.addTickables(notes);
                 var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
 
@@ -315,17 +435,30 @@ var notes = [
                 context.svg.removeChild(group);
                 group = context.openGroup();
                 voice.draw(context, getMeasure(offsetX));
+
+		// Consider redrawing all notes after removing group similar to this:
+		// s_voice.draw(context, treble_stave_2);
+		// a_voice.draw(context, treble_stave_2);
+		// t_voice.draw(context, treble_stave_2);
+		// b_voice.draw(context, treble_stave_2);
+
                 context.closeGroup();
             }
+
+
+
+
+
+
         });
 
-        
+
 
 
 
 
 	</script>
-	<button id="Analyze" onclick="document.getElementById('Output').innerHTML='Success!'"">Analyze</button>
+	<button id="Analyze" onclick="document.getElementById('Output').innerHTML=analyzeNotes()">Analyze</button>
 	<div id="Output"></div>
 </body>
 </html>
