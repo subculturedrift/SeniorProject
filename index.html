@@ -114,87 +114,7 @@
 
 		treble_stave_4.setContext(context).draw();
 		bass_stave_4.setContext(context).draw();
-
-
-
-// ----------------------------------------------------------------------
-// Anthony's code for referencing adding multiple whole notes per measure
-// ----------------------------------------------------------------------
-
-		// MEASURE_1
-		// Add notes
-		// var s_notes = [new VF.StaveNote({clef: "treble", keys: ["g/5"], duration: "w"})];
-		// var a_notes = [new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "w"})];
-		// var t_notes = [new VF.StaveNote({clef: "bass", keys: ["e/3"], duration: "w"})];
-		// var b_notes = [new VF.StaveNote({clef: "bass", keys: ["c/1"], duration: "w"})];
-
-		// Add color
-		// s_notes[0].setStyle({ fillStyle: S_COLOR});
-		// a_notes[0].setStyle({ fillStyle: A_COLOR});
-		// t_notes[0].setStyle({ fillStyle: T_COLOR});
-		// b_notes[0].setStyle({ fillStyle: B_COLOR});
-
-		// Create voices
-		// var s_voice = new VF.Voice({num_beats: 4, beat_value: 4});
-		// s_voice.addTickables(s_notes);
-		// var a_voice = new VF.Voice({num_beats: 4, beat_value: 4});
-		// a_voice.addTickables(a_notes);
-		// var t_voice = new VF.Voice({num_beats: 4, beat_value: 4});
-		// t_voice.addTickables(t_notes);
-		// var b_voice = new VF.Voice({num_beats: 4, beat_value: 4});
-		// b_voice.addTickables(b_notes);
-
-		// // Format notes
-		// var s_formatter = new VF.Formatter().joinVoices([s_voice]).format([s_voice], WIDTH);
-		// var a_formatter = new VF.Formatter().joinVoices([a_voice]).format([a_voice], WIDTH);
-		// var t_formatter = new VF.Formatter().joinVoices([t_voice]).format([t_voice], WIDTH);
-		// var b_formatter = new VF.Formatter().joinVoices([b_voice]).format([b_voice], WIDTH);
-
-		// // Draw.
-		// s_voice.draw(context, treble_stave_1);
-		// a_voice.draw(context, treble_stave_1);
-		// t_voice.draw(context, treble_stave_1);
-		// b_voice.draw(context, treble_stave_1);
-
-
-		// // MEASURE_2
-		// // Add notes
-		// var s_notes = [new VF.StaveNote({clef: "treble", keys: ["c/5"], duration: "w"})];
-		// var a_notes = [new VF.StaveNote({clef: "treble", keys: ["a/4"], duration: "w"})];
-		// var t_notes = [new VF.StaveNote({clef: "bass", keys: ["a/3"], duration: "w"})];
-		// var b_note_2 = new VF.StaveNote({clef: "bass", keys: ["f/1"], duration: "w"}); // copies note to variable for analysis
-		// var b_notes = [b_note_2];
-
-		// // Add color
-		// s_notes[0].setStyle({ fillStyle: S_COLOR});
-		// a_notes[0].setStyle({ fillStyle: A_COLOR});
-		// t_notes[0].setStyle({ fillStyle: T_COLOR});
-		// b_notes[0].setStyle({ fillStyle: B_COLOR});
-
-		// // Create voices
-		// s_voice = new VF.Voice({num_beats: 4, beat_value: 4});
-		// s_voice.addTickables(s_notes);
-		// a_voice = new VF.Voice({num_beats: 4, beat_value: 4});
-		// a_voice.addTickables(a_notes);
-		// t_voice = new VF.Voice({num_beats: 4, beat_value: 4});
-		// t_voice.addTickables(t_notes);
-		// b_voice = new VF.Voice({num_beats: 4, beat_value: 4});
-		// b_voice.addTickables(b_notes);
-
-		// // Format notes
-		// var s_formatter = new VF.Formatter().joinVoices([s_voice]).format([s_voice], WIDTH);
-		// var a_formatter = new VF.Formatter().joinVoices([a_voice]).format([a_voice], WIDTH);
-		// var t_formatter = new VF.Formatter().joinVoices([t_voice]).format([t_voice], WIDTH);
-		// var b_formatter = new VF.Formatter().joinVoices([b_voice]).format([b_voice], WIDTH);
-
-		// // Draw.
-		// s_voice.draw(context, treble_stave_2);
-		// a_voice.draw(context, treble_stave_2);
-		// t_voice.draw(context, treble_stave_2);
-		// b_voice.draw(context, treble_stave_2);
-
-
-// Deb's code
+		
 
 var notes = [
         // A quarter C note:
@@ -302,7 +222,7 @@ var notes = [
 
         function getMeasure( x ) {
             // determine which of 4 measures you're in based on x position (horizontal)
-        	var measure = treble_stave_1;
+        	var measure = null;
 
         	if (x > 10 & x < 210) {
         		measure = treble_stave_1;
@@ -314,12 +234,145 @@ var notes = [
         		measure = treble_stave_4;
         	}
         	return measure;
-      		}
+      	}
+
+
+
+
+        // FIX ME
+        // function getMeasure( noteToDraw, location, color ) {
+        //     if (noteToDraw != null) {
+        //     	var note = [new VF.StaveNote({clef: "treble", keys: [s1], duration: "w"})];
+        //     	note[0].setStyle({ fillStyle: color});
+        //     	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+        //     	voice.addTickables(note);
+        //     	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+        //     	voice.draw(context, location);
+        //     }
+        // }
+
+
 
 
         function analyzeNotes() {
             // Build analysis code here.
-        	var output = "test";
+        	var output = "";
+
+        	// Make sure all notes have a value.
+        	if (!s1
+        		|| !s2
+        		|| !s3
+        		|| !s4
+        		|| !a1
+        		|| !a2
+        		|| !a3
+        		|| !a4
+        		|| !t1
+        		|| !t2
+        		|| !t3
+        		|| !t4
+        		|| !b1
+        		|| !b2
+        		|| !b3
+        		|| !b4
+        		) {
+        		output = "Incomplete score.";
+        	}
+
+        	// If so, analyze.
+        	else {
+        		// Grab note values
+        		var s1_noteValue = s1.substr(0,1);
+        		var s2_noteValue = s2.substr(0,1);
+        		var s3_noteValue = s3.substr(0,1);
+        		var s4_noteValue = s4.substr(0,1);
+        		var a1_noteValue = a1.substr(0,1);
+        		var a2_noteValue = a2.substr(0,1);
+        		var a3_noteValue = a3.substr(0,1);
+        		var a4_noteValue = a4.substr(0,1);
+        		var t1_noteValue = t1.substr(0,1);
+        		var t2_noteValue = t2.substr(0,1);
+        		var t3_noteValue = t3.substr(0,1);
+        		var t4_noteValue = t4.substr(0,1);
+        		var b1_noteValue = b1.substr(0,1);
+        		var b2_noteValue = b2.substr(0,1);
+        		var b3_noteValue = b3.substr(0,1);
+        		var b4_noteValue = b4.substr(0,1);
+
+        		// Check for parallel octaves
+        		// Soprano and alto
+        		if ((s1_noteValue == a1_noteValue && s2_noteValue == a2_noteValue) && s1 != s2) {
+        			output = output + "Parallel octaves between measures 1 and 2 (soprano and alto).\n";
+        		}
+        		if ((s2_noteValue == a2_noteValue && s3_noteValue == a3_noteValue) && s2 != s3) {
+        			output = output + "Parallel octaves between measures 2 and 3 (soprano and alto).\n";
+        		}  
+        		if ((s3_noteValue == a3_noteValue && s4_noteValue == a4_noteValue) && s3 != s4) {
+        			output = output + "Parallel octaves between measures 3 and 4 (soprano and alto).\n";
+        		}
+
+        		// Soprano and tenor
+        		if ((s1_noteValue == t1_noteValue && s2_noteValue == t2_noteValue) && s1 != s2) {
+        			output = output + "Parallel octaves between measures 1 and 2 (soprano and tenor).\n";
+        		}
+        		if ((s2_noteValue == t2_noteValue && s3_noteValue == t3_noteValue) && s2 != s3) {
+        			output = output + "Parallel octaves between measures 2 and 3 (soprano and tenor).\n";
+        		}  
+        		if ((s3_noteValue == t3_noteValue && s4_noteValue == t4_noteValue) && s3 != s4) {
+        			output = output + "Parallel octaves between measures 3 and 4 (soprano and tenor).\n";
+        		}    
+
+        		// Soprano and bass
+        		if ((s1_noteValue == b1_noteValue && s2_noteValue == b2_noteValue) && s1 != s2) {
+        			output = output + "Parallel octaves between measures 1 and 2 (soprano and bass).\n";
+        		}
+        		if ((s2_noteValue == b2_noteValue && s3_noteValue == b3_noteValue) && s2 != s3) {
+        			output = output + "Parallel octaves between measures 2 and 3 (soprano and bass).\n";
+        		}  
+        		if ((s3_noteValue == b3_noteValue && s4_noteValue == b4_noteValue) && s3 != s4) {
+        			output = output + "Parallel octaves between measures 3 and 4 (soprano and bass).\n";
+        		}
+
+
+        		// Alto and tenor
+        		if ((a1_noteValue == t1_noteValue && a2_noteValue == t2_noteValue) && a1 != a2) {
+        			output = output + "Parallel octaves between measures 1 and 2 (alto and tenor).\n";
+        		}
+        		if ((a2_noteValue == t2_noteValue && a3_noteValue == t3_noteValue) && a2 != a3) {
+        			output = output + "Parallel octaves between measures 2 and 3 (alto and tenor).\n";
+        		}  
+        		if ((a3_noteValue == t3_noteValue && a4_noteValue == t4_noteValue) && a3 != a4) {
+        			output = output + "Parallel octaves between measures 3 and 4 (alto and tenor).\n";
+        		}
+
+        		// Alto and bass
+        		if ((a1_noteValue == b1_noteValue && a2_noteValue == b2_noteValue) && a1 != a2) {
+        			output = output + "Parallel octaves between measures 1 and 2 (alto and bass).\n";
+        		}
+        		if ((a2_noteValue == b2_noteValue && a3_noteValue == b3_noteValue) && a2 != a3) {
+        			output = output + "Parallel octaves between measures 2 and 3 (alto and bass).\n";
+        		}  
+        		if ((a3_noteValue == b3_noteValue && a4_noteValue == b4_noteValue) && a3 != a4) {
+        			output = output + "Parallel octaves between measures 3 and 4 (alto and bass).\n";
+        		} 
+
+        		// Tenor and bass
+        		if ((t1_noteValue == b1_noteValue && t2_noteValue == b2_noteValue) && t1 != t2) {
+        			output = output + "Parallel octaves between measures 1 and 2 (tenor and bass).\n";
+        		}
+        		if ((t2_noteValue == b2_noteValue && t3_noteValue == b3_noteValue) && t2 != t3) {
+        			output = output + "Parallel octaves between measures 2 and 3 (tenor and bass).\n";
+        		}  
+        		if ((t3_noteValue == b3_noteValue && t4_noteValue == b4_noteValue) && t3 != t4) {
+        			output = output + "Parallel octaves between measures 3 and 4 (tenor and bass).\n";
+        		}
+        	}
+
+
+        	// Create output if no issues found.
+        	if (output = ""){
+        		output = "No issues found."
+        	}
         	return output;
       	}
 
@@ -427,20 +480,170 @@ var notes = [
                 }
 
 
+				// note = new VF.StaveNote({clef: "treble", keys: s1, duration: "w" });
 
                 voice.addTickables(notes);
+                
                 var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+
+
 
                 // remove previous group:
                 context.svg.removeChild(group);
                 group = context.openGroup();
                 voice.draw(context, getMeasure(offsetX));
 
-		// Consider redrawing all notes after removing group similar to this:
-		// s_voice.draw(context, treble_stave_2);
-		// a_voice.draw(context, treble_stave_2);
-		// t_voice.draw(context, treble_stave_2);
-		// b_voice.draw(context, treble_stave_2);
+
+       			// Statements to draw all notes with values:
+                // Cannot get getMeasure to work - temporary solution:
+	            //getMeasure(s1, treble_stave_1, S_COLOR);
+
+	            if (s1 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [s1], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: S_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_1);
+            	}
+
+            	if (s2 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [s2], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: S_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_2);
+            	}
+
+            	if (s3 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [s3], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: S_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_3);
+            	}
+
+            	if (s4 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [s4], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: S_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_4);
+            	}
+
+            	if (a1 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [a1], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: A_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_1);
+            	}
+
+            	if (a2 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [a2], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: A_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_2);
+            	}
+
+            	if (a3 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [a3], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: A_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_3);
+            	}
+
+            	if (a4 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [a4], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: A_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_4);
+            	}
+
+            	if (t1 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [t1], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: T_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_1);
+            	}
+
+            	if (t2 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [t2], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: T_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_2);
+            	}
+
+            	if (t3 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [t3], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: T_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_3);
+            	}
+
+            	if (t4 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [t4], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: T_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_4);
+            	}
+
+            	if (b1 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [b1], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: B_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_1);
+            	}
+
+            	if (b2 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [b2], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: B_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_2);
+            	}
+
+            	if (b3 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [b3], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: B_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_3);
+            	}
+
+            	if (b4 != null) {
+	            	var note = [new VF.StaveNote({clef: "treble", keys: [b4], duration: "w"})];
+	            	note[0].setStyle({ fillStyle: B_COLOR});
+	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+	            	voice.addTickables(note);
+	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+	            	voice.draw(context, treble_stave_4);
+            	}
+
+
+
 
                 context.closeGroup();
             }
