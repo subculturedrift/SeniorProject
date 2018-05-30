@@ -52,7 +52,7 @@
 		var T_COLOR = "green";
 		var B_COLOR = "orange";
 
-		// Values for analysis and for determining if group should be removed (value != null)
+		// Values for analysis and for determining if group should be removed within the click function (value != null)
 		var s1 = null;
 		var s2 = null;
 		var s3 = null;
@@ -72,6 +72,28 @@
 		var b2 = null;
 		var b3 = null;
 		var b4 = null;
+
+        var s1_midi = null;
+        var s2_midi = null;
+        var s3_midi = null;
+        var s4_midi = null;
+
+        var a1_midi = null;
+        var a2_midi = null;
+        var a3_midi = null;
+        var a4_midi = null;
+
+        var t1_midi = null;
+        var t2_midi = null;
+        var t3_midi = null;
+        var t4_midi = null;
+
+        var b1_midi = null;
+        var b2_midi = null;
+        var b3_midi = null;
+        var b4_midi = null;
+
+
 
 		// Create an SVG renderer and attach it to the DIV element named "boo".
 		var div = document.getElementById("boo");
@@ -116,7 +138,7 @@
 		bass_stave_4.setContext(context).draw();
 		
 
-var notes = [
+        var notes = [
         // A quarter C note:
         new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "w" })
         ];
@@ -125,6 +147,7 @@ var notes = [
         // Create a contect group so it can be deleted when we want to redraw notes:
         var group = context.openGroup();
 
+        // Used to separate sections within the click method.
         var group_s1 = null;
         var group_s2 = null;
         var group_s3 = null;
@@ -157,8 +180,13 @@ var notes = [
         // And when you want to delete it, do this:
         // context.svg.removeChild(group);
 
-        // Get key based on Y poisition of user click:
+        // Get key and MIDI values based on Y poisition of user click:
         function getKeyFromScreenY( y ) {
+
+        // *********************
+        // ********************* Create custom object to store both key and midi???
+        // *********************
+
             var key = null;
 
             // var topLineTopY  = stave.getTopLineTopY();
@@ -220,6 +248,70 @@ var notes = [
             return key;
         }
 
+
+        function getMidiFromScreenY( y ) {
+            var midi = null;
+
+            // var topLineTopY  = stave.getTopLineTopY();
+            if (y < 76) {
+                midi = 93;
+            } else if (y >= 76 & y <= 79) {
+                midi = 91;
+            } else if (y >= 80 & y <= 83) {
+                midi = 89;
+            } else if (y >= 84 & y <= 87) {
+                midi = 88;
+            } else if (y >= 88 & y <= 91) {
+                midi = 86;
+            } else if (y >= 92 & y <= 95) {
+                midi = 84;
+            } else if (y >= 96 & y <= 100) {
+                midi = 83;
+            } else if (y >= 101 & y <= 106) {
+                midi = 81;
+            } else if (y >= 107 & y <= 111) {
+                midi = 79;
+            } else if (y >= 112 & y <= 116) {
+                midi = 77;
+            } else if (y >= 117 & y <= 121) {
+                midi = 76;
+            } else if (y >= 122 & y <= 126) {
+                midi = 74;
+            } else if (y >= 127 & y <= 131) {
+                midi = 72;
+            } else if (y >= 132 & y <= 136) {
+                midi = 71;
+            } else if (y >= 137 & y <= 141) {
+                midi = 69;
+            } else if (y >= 142 & y <= 146) {
+                midi = 67;
+            } else if (y >= 147 & y <= 151) {
+                midi = 65;
+            } else if (y >= 152 & y <= 156) {
+                midi = 64;
+            } else if (y >= 157 & y <= 161) {
+                midi = 62;
+            } else if (y >= 162 & y <= 166) {
+                midi = 60;
+            } else if (y >= 167 & y <= 171) {
+                midi = 59;
+            } else if (y >= 172 & y <= 176) {
+                midi = 57;
+            } else if (y >= 177 & y <= 181) {
+                midi = 55;
+            } else if (y >= 182 & y <= 186) {
+                midi = 53;
+            } else if (y >= 187 & y <= 191) {
+                midi = 52;
+            } else if (y >= 192 & y <= 196) {
+                midi = 50;
+            } else if (y > 197) {
+                midi = 48;
+            }
+            return midi;
+        }
+
+
         function getMeasure( x ) {
             // determine which of 4 measures you're in based on x position (horizontal)
         	var measure = null;
@@ -237,140 +329,158 @@ var notes = [
       	}
 
 
-
-
-        // FIX ME
-        // function getMeasure( noteToDraw, location, color ) {
-        //     if (noteToDraw != null) {
-        //     	var note = [new VF.StaveNote({clef: "treble", keys: [s1], duration: "w"})];
-        //     	note[0].setStyle({ fillStyle: color});
-        //     	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
-        //     	voice.addTickables(note);
-        //     	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
-        //     	voice.draw(context, location);
-        //     }
-        // }
-
-
-
-
         function analyzeNotes() {
-            // Build analysis code here.
+            // Build analysis code here
         	var output = "";
 
-        	// Make sure all notes have a value.
-        	if (!s1
-        		|| !s2
-        		|| !s3
-        		|| !s4
-        		|| !a1
-        		|| !a2
-        		|| !a3
-        		|| !a4
-        		|| !t1
-        		|| !t2
-        		|| !t3
-        		|| !t4
-        		|| !b1
-        		|| !b2
-        		|| !b3
-        		|| !b4
-        		) {
+        	// Make sure all notes have a value
+        	if (!s1||!s2||!s3||!s4||!a1||!a2||!a3||!a4||!t1||!t2||!t3||!t4||!b1||!b2||!b3||!b4) {
         		output = "Incomplete score.";
         	}
 
-        	// If so, analyze.
-        	else {
-        		// Grab note values
-        		var s1_noteValue = s1.substr(0,1);
-        		var s2_noteValue = s2.substr(0,1);
-        		var s3_noteValue = s3.substr(0,1);
-        		var s4_noteValue = s4.substr(0,1);
-        		var a1_noteValue = a1.substr(0,1);
-        		var a2_noteValue = a2.substr(0,1);
-        		var a3_noteValue = a3.substr(0,1);
-        		var a4_noteValue = a4.substr(0,1);
-        		var t1_noteValue = t1.substr(0,1);
-        		var t2_noteValue = t2.substr(0,1);
-        		var t3_noteValue = t3.substr(0,1);
-        		var t4_noteValue = t4.substr(0,1);
-        		var b1_noteValue = b1.substr(0,1);
-        		var b2_noteValue = b2.substr(0,1);
-        		var b3_noteValue = b3.substr(0,1);
-        		var b4_noteValue = b4.substr(0,1);
+            // If so, analyze
+            else {
+        		
+                // FUNCTIONS
+                // Check for parallel octaves
+                function parallelOctaves(note1, note2, note3, note4) {
+                    // Grab note values. (This should later be improved for the case of accidentals—should use forward slash as delimiter)
+                    var note1_value = note1.substr(0,1);
+                    var note2_value = note2.substr(0,1);
+                    var note3_value = note3.substr(0,1);
+                    var note4_value = note4.substr(0,1);
+                    var result = false;
 
-        		// Check for parallel octaves
+                    if ((note1_value == note3_value && note2_value == note4_value) && (note1 != note2 || note3 != note4)) {
+                        result = true;
+                    }
+
+                    return result;
+                }
+
+                // ********************
+                // Check for parallel fifths
+                // ********************
+                function parallelFifths (midi1, midi2, midi3, midi4) {
+
+                }
+
+                // Check for voice crossing
+                function voiceCrossing (midi1, midi2) {
+                    var result = false;
+
+                    if (midi1 < midi2) {
+                        result = true;
+                    }
+
+                    return result;
+                }
+
+                // Check distance between notes
+                function distance (midi1, midi2) {
+                    var result = false;
+
+                    if ((midi1 - midi2) > 12) {
+                        result = true;
+                    }
+
+                    return result;
+                }
+
+                function distanceTB (midi1, midi2) {
+                    var result = false;
+
+                    if ((midi1 - midi2) > 24) {
+                        result = true;
+                    }
+
+                    return result;
+                }
+
+
+                // EXECUTE FUNCTIONS BETWEEN VOICES
+                // ******************
+                // Fix new line issue
+                // ******************
         		// Soprano and alto
-        		if ((s1_noteValue == a1_noteValue && s2_noteValue == a2_noteValue) && s1 != s2) {
-        			output = output + "Parallel octaves between measures 1 and 2 (soprano and alto).\n";
-        		}
-        		if ((s2_noteValue == a2_noteValue && s3_noteValue == a3_noteValue) && s2 != s3) {
-        			output = output + "Parallel octaves between measures 2 and 3 (soprano and alto).\n";
-        		}  
-        		if ((s3_noteValue == a3_noteValue && s4_noteValue == a4_noteValue) && s3 != s4) {
-        			output = output + "Parallel octaves between measures 3 and 4 (soprano and alto).\n";
-        		}
+        		if (parallelOctaves(s1, s2, a1, a2)) { output = output + "Parallel octaves between measures 1 and 2 (soprano and alto).\n";}
+                if (parallelOctaves(s2, s3, a2, a3)) { output = output + "Parallel octaves between measures 2 and 3 (soprano and alto).\n";}
+                if (parallelOctaves(s3, s4, a3, a4)) { output = output + "Parallel octaves between measures 3 and 4 (soprano and alto).\n";}
 
-        		// Soprano and tenor
-        		if ((s1_noteValue == t1_noteValue && s2_noteValue == t2_noteValue) && s1 != s2) {
-        			output = output + "Parallel octaves between measures 1 and 2 (soprano and tenor).\n";
-        		}
-        		if ((s2_noteValue == t2_noteValue && s3_noteValue == t3_noteValue) && s2 != s3) {
-        			output = output + "Parallel octaves between measures 2 and 3 (soprano and tenor).\n";
-        		}  
-        		if ((s3_noteValue == t3_noteValue && s4_noteValue == t4_noteValue) && s3 != s4) {
-        			output = output + "Parallel octaves between measures 3 and 4 (soprano and tenor).\n";
-        		}    
+                if (voiceCrossing(s1_midi, a1_midi)) { output = output + "Voice crossing in measure 1 (soprano and alto).\n";}
+                if (voiceCrossing(s2_midi, a2_midi)) { output = output + "Voice crossing in measure 2 (soprano and alto).\n";}
+                if (voiceCrossing(s3_midi, a3_midi)) { output = output + "Voice crossing in measure 3 (soprano and alto).\n";}
+                if (voiceCrossing(s4_midi, a4_midi)) { output = output + "Voice crossing in measure 4 (soprano and alto).\n";}
 
-        		// Soprano and bass
-        		if ((s1_noteValue == b1_noteValue && s2_noteValue == b2_noteValue) && s1 != s2) {
-        			output = output + "Parallel octaves between measures 1 and 2 (soprano and bass).\n";
-        		}
-        		if ((s2_noteValue == b2_noteValue && s3_noteValue == b3_noteValue) && s2 != s3) {
-        			output = output + "Parallel octaves between measures 2 and 3 (soprano and bass).\n";
-        		}  
-        		if ((s3_noteValue == b3_noteValue && s4_noteValue == b4_noteValue) && s3 != s4) {
-        			output = output + "Parallel octaves between measures 3 and 4 (soprano and bass).\n";
-        		}
+                if (distance(s1_midi, a1_midi)) { output = output + "Voices are too far apart in measure 1 (soprano and alto).\n";}
+                if (distance(s2_midi, a2_midi)) { output = output + "Voices are too far apart in measure 2 (soprano and alto).\n";}
+                if (distance(s3_midi, a3_midi)) { output = output + "Voices are too far apart in measure 3 (soprano and alto).\n";}
+                if (distance(s4_midi, a4_midi)) { output = output + "Voices are too far apart in measure 4 (soprano and alto).\n";}
 
+                // Soprano and tenor
+        	    if (parallelOctaves(s1, s2, t1, t2)) { output = output + "Parallel octaves between measures 1 and 2 (soprano and tenor).\n";}
+                if (parallelOctaves(s2, s3, t2, t3)) { output = output + "Parallel octaves between measures 2 and 3 (soprano and tenor).\n";}
+                if (parallelOctaves(s3, s4, t3, t4)) { output = output + "Parallel octaves between measures 3 and 4 (soprano and tenor).\n";}
 
-        		// Alto and tenor
-        		if ((a1_noteValue == t1_noteValue && a2_noteValue == t2_noteValue) && a1 != a2) {
-        			output = output + "Parallel octaves between measures 1 and 2 (alto and tenor).\n";
-        		}
-        		if ((a2_noteValue == t2_noteValue && a3_noteValue == t3_noteValue) && a2 != a3) {
-        			output = output + "Parallel octaves between measures 2 and 3 (alto and tenor).\n";
-        		}  
-        		if ((a3_noteValue == t3_noteValue && a4_noteValue == t4_noteValue) && a3 != a4) {
-        			output = output + "Parallel octaves between measures 3 and 4 (alto and tenor).\n";
-        		}
+                if (voiceCrossing(s1_midi, t1_midi)) { output = output + "Voice crossing in measure 1 (soprano and tenor).\n";}
+                if (voiceCrossing(s2_midi, t2_midi)) { output = output + "Voice crossing in measure 2 (soprano and tenor).\n";}
+                if (voiceCrossing(s3_midi, t3_midi)) { output = output + "Voice crossing in measure 3 (soprano and tenor).\n";}
+                if (voiceCrossing(s4_midi, t4_midi)) { output = output + "Voice crossing in measure 4 (soprano and tenor).\n";}
 
-        		// Alto and bass
-        		if ((a1_noteValue == b1_noteValue && a2_noteValue == b2_noteValue) && a1 != a2) {
-        			output = output + "Parallel octaves between measures 1 and 2 (alto and bass).\n";
-        		}
-        		if ((a2_noteValue == b2_noteValue && a3_noteValue == b3_noteValue) && a2 != a3) {
-        			output = output + "Parallel octaves between measures 2 and 3 (alto and bass).\n";
-        		}  
-        		if ((a3_noteValue == b3_noteValue && a4_noteValue == b4_noteValue) && a3 != a4) {
-        			output = output + "Parallel octaves between measures 3 and 4 (alto and bass).\n";
-        		} 
+        	    // Soprano and bass
+                if (parallelOctaves(s1, s2, b1, b2)) { output = output + "Parallel octaves between measures 1 and 2 (soprano and bass).\n";}
+                if (parallelOctaves(s2, s3, b2, b3)) { output = output + "Parallel octaves between measures 2 and 3 (soprano and bass).\n";}
+                if (parallelOctaves(s3, s4, b3, b4)) { output = output + "Parallel octaves between measures 3 and 4 (soprano and bass).\n";}
 
-        		// Tenor and bass
-        		if ((t1_noteValue == b1_noteValue && t2_noteValue == b2_noteValue) && t1 != t2) {
-        			output = output + "Parallel octaves between measures 1 and 2 (tenor and bass).\n";
-        		}
-        		if ((t2_noteValue == b2_noteValue && t3_noteValue == b3_noteValue) && t2 != t3) {
-        			output = output + "Parallel octaves between measures 2 and 3 (tenor and bass).\n";
-        		}  
-        		if ((t3_noteValue == b3_noteValue && t4_noteValue == b4_noteValue) && t3 != t4) {
-        			output = output + "Parallel octaves between measures 3 and 4 (tenor and bass).\n";
-        		}
+                if (voiceCrossing(s1_midi, b1_midi)) { output = output + "Voice crossing in measure 1 (soprano and bass).\n";}
+                if (voiceCrossing(s2_midi, b2_midi)) { output = output + "Voice crossing in measure 2 (soprano and bass).\n";}
+                if (voiceCrossing(s3_midi, b3_midi)) { output = output + "Voice crossing in measure 3 (soprano and bass).\n";}
+                if (voiceCrossing(s4_midi, b4_midi)) { output = output + "Voice crossing in measure 4 (soprano and bass).\n";}
+                
+                // Alto and tenor
+                if (parallelOctaves(a1, a2, t1, t2)) { output = output + "Parallel octaves between measures 1 and 2 (alto and tenor).\n";}
+                if (parallelOctaves(a2, a3, t2, t3)) { output = output + "Parallel octaves between measures 2 and 3 (alto and tenor).\n";}
+                if (parallelOctaves(a3, a4, t3, t4)) { output = output + "Parallel octaves between measures 3 and 4 (alto and tenor).\n";}
+
+                if (voiceCrossing(a1_midi, t1_midi)) { output = output + "Voice crossing in measure 1 (alto and tenor).\n";}
+                if (voiceCrossing(a2_midi, t2_midi)) { output = output + "Voice crossing in measure 2 (alto and tenor).\n";}
+                if (voiceCrossing(a3_midi, t3_midi)) { output = output + "Voice crossing in measure 3 (alto and tenor).\n";}
+                if (voiceCrossing(a4_midi, t4_midi)) { output = output + "Voice crossing in measure 4 (alto and tenor).\n";}
+
+                if (distance(a1_midi, t1_midi)) { output = output + "Voices are too far apart in measure 1 (alto and tenor).\n";}
+                if (distance(a2_midi, t2_midi)) { output = output + "Voices are too far apart in measure 2 (alto and tenor).\n";}
+                if (distance(a3_midi, t3_midi)) { output = output + "Voices are too far apart in measure 3 (alto and tenor).\n";}
+                if (distance(a4_midi, t4_midi)) { output = output + "Voices are too far apart in measure 4 (alto and tenor).\n";}
+
+                // Alto and bass
+                if (parallelOctaves(a1, a2, b1, b2)) { output = output + "Parallel octaves between measures 1 and 2 (alto and bass).\n";}
+                if (parallelOctaves(a2, a3, b2, b3)) { output = output + "Parallel octaves between measures 2 and 3 (alto and bass).\n";}
+                if (parallelOctaves(a3, a4, b3, b4)) { output = output + "Parallel octaves between measures 3 and 4 (alto and bass).\n";}
+
+                if (voiceCrossing(a1_midi, b1_midi)) { output = output + "Voice crossing in measure 1 (alto and bass).\n";}
+                if (voiceCrossing(a2_midi, b2_midi)) { output = output + "Voice crossing in measure 2 (alto and bass).\n";}
+                if (voiceCrossing(a3_midi, b3_midi)) { output = output + "Voice crossing in measure 3 (alto and bass).\n";}
+                if (voiceCrossing(a4_midi, b4_midi)) { output = output + "Voice crossing in measure 4 (alto and bass).\n";}
+
+                // Tenor and bass
+                if (parallelOctaves(t1, t2, b1, b2)) { output = output + "Parallel octaves between measures 1 and 2 (tenor and bass).\n";}
+                if (parallelOctaves(t2, t3, b2, b3)) { output = output + "Parallel octaves between measures 2 and 3 (tenor and bass).\n";}
+                if (parallelOctaves(t3, t4, b3, b4)) { output = output + "Parallel octaves between measures 3 and 4 (tenor and bass).\n";}
+
+                if (voiceCrossing(t1_midi, b1_midi)) { output = output + "Voice crossing in measure 1 (tenor and bass).\n";}
+                if (voiceCrossing(t2_midi, b2_midi)) { output = output + "Voice crossing in measure 2 (tenor and bass).\n";}
+                if (voiceCrossing(t3_midi, b3_midi)) { output = output + "Voice crossing in measure 3 (tenor and bass).\n";}
+                if (voiceCrossing(t4_midi, b4_midi)) { output = output + "Voice crossing in measure 4 (tenor and bass).\n";}
+
+                if (distanceTB(t1_midi, b1_midi)) { output = output + "Voices are too far apart in measure 1 (tenor and bass).\n";}
+                if (distanceTB(t2_midi, b2_midi)) { output = output + "Voices are too far apart in measure 2 (tenor and bass).\n";}
+                if (distanceTB(t3_midi, b3_midi)) { output = output + "Voices are too far apart in measure 3 (tenor and bass).\n";}
+                if (distanceTB(t4_midi, b4_midi)) { output = output + "Voices are too far apart in measure 4 (tenor and bass).\n";}
         	}
 
 
         	// Create output if no issues found.
-        	if (output = ""){
+        	if (output == ""){
         		output = "No issues found."
         	}
         	return output;
@@ -394,6 +504,7 @@ var notes = [
                 var offsetX = originalEvent.offsetX;
                 var offsetY = originalEvent.offsetY;
                 var keyName = getKeyFromScreenY(offsetY);
+                var midi = getMidiFromScreenY(offsetY);
                 console.log(keyName);
                 var keyArray = [keyName];
 // 
@@ -417,65 +528,85 @@ var notes = [
                 }
 
                 // Assign value to note variables
+                // *********************
+                // ********************* Create method for these
+                // *********************
+
                 if (document.getElementById('soprano').checked == true) {
                 	if (getMeasure(offsetX) == treble_stave_1) {
                 		s1 = keyName;
+                        s1_midi = midi;
                 		activeGroup = group_s1;
-                		console.log('s1 changed to ' + keyName);
+                		console.log('s1 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	} else if (getMeasure(offsetX) == treble_stave_2) {
                 		s2 = keyName;
+                        s2_midi = midi;
                 		activeGroup = group_s2;
-						console.log('s2 changed to ' + keyName);
+						console.log('s2 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	} else if (getMeasure(offsetX) == treble_stave_3) {
                 		s3 = keyName;
+                        s3_midi = midi;
                 		activeGroup = group_s2;
-                		console.log('s3 changed to ' + keyName);
+                		console.log('s3 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	} else if (getMeasure(offsetX) == treble_stave_4) {
                 		s4 = keyName;
+                        s4_midi = midi;
                 		activeGroup = group_s2;
-                		console.log('s4 changed to ' + keyName);
+                		console.log('s4 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	}
                 } else if (document.getElementById('alto').checked == true) {
                 	if (getMeasure(offsetX) == treble_stave_1) {
                 		a1 = keyName;
-                		console.log('a1 changed to ' + keyName);
+                        a1_midi = midi;
+                		console.log('a1 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	} else if (getMeasure(offsetX) == treble_stave_2) {
                 		a2 = keyName;
-                		console.log('a2 changed to ' + keyName);
+                        a2_midi = midi;
+                		console.log('a2 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	} else if (getMeasure(offsetX) == treble_stave_3) {
                 		a3 = keyName;
-                		console.log('a3 changed to ' + keyName);
+                        a3_midi = midi;
+                		console.log('a3 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	} else if (getMeasure(offsetX) == treble_stave_4) {
                 		a4 = keyName;
-                		console.log('a4 changed to ' + keyName);
+                        a4_midi = midi;
+                		console.log('a4 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	}
                 } else if (document.getElementById('tenor').checked == true) {
                 	if (getMeasure(offsetX) == treble_stave_1) {
                 		t1 = keyName;
-                		console.log('t1 changed to ' + keyName);
+                        t1_midi = midi;
+                		console.log('t1 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	} else if (getMeasure(offsetX) == treble_stave_2) {
                 		t2 = keyName;
-                		console.log('t2 changed to ' + keyName);
+                        t2_midi = midi;
+                		console.log('t2 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	} else if (getMeasure(offsetX) == treble_stave_3) {
                 		t3 = keyName;
-                		console.log('t3 changed to ' + keyName);
+                        t3_midi = midi;
+                		console.log('t3 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	} else if (getMeasure(offsetX) == treble_stave_4) {
                 		t4 = keyName;
-                		console.log('t4 changed to ' + keyName);
+                        t4_midi = midi;
+                		console.log('t4 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	}
                 } else if (document.getElementById('bass').checked == true) {
                 	if (getMeasure(offsetX) == treble_stave_1) {
                 		b1 = keyName;
-                		console.log('b1 changed to ' + keyName);
+                        b1_midi = midi;
+                		console.log('b1 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	} else if (getMeasure(offsetX) == treble_stave_2) {
                 		b2 = keyName;
-                		console.log('b2 changed to ' + keyName);
+                        b2_midi = midi;
+                		console.log('b2 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	} else if (getMeasure(offsetX) == treble_stave_3) {
                 		b3 = keyName;
-                		console.log('b3 changed to ' + keyName);
+                        b3_midi = midi;
+                		console.log('b3 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	} else if (getMeasure(offsetX) == treble_stave_4) {
                 		b4 = keyName;
-                		console.log('b4 changed to ' + keyName);
+                        b4_midi = midi;
+                		console.log('b4 changed to ' + keyName + '(MIDI ' + midi + ')');
                 	}
                 }
 
@@ -493,19 +624,18 @@ var notes = [
                 group = context.openGroup();
                 voice.draw(context, getMeasure(offsetX));
 
+                // *********************
+                // ********************* Create method for these
+                // *********************
 
-       			// Statements to draw all notes with values:
-                // Cannot get getMeasure to work - temporary solution:
-	            //getMeasure(s1, treble_stave_1, S_COLOR);
-
-	            if (s1 != null) {
-	            	var note = [new VF.StaveNote({clef: "treble", keys: [s1], duration: "w"})];
-	            	note[0].setStyle({ fillStyle: S_COLOR});
-	            	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
-	            	voice.addTickables(note);
-	            	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
-	            	voice.draw(context, treble_stave_1);
-            	}
+                if (s1 != null) {
+                    var note = [new VF.StaveNote({clef: "treble", keys: [s1], duration: "w"})];
+                    note[0].setStyle({ fillStyle: S_COLOR});
+                    var voice = new VF.Voice({num_beats: 4, beat_value: 4});
+                    voice.addTickables(note);
+                    var formatter = new VF.Formatter().joinVoices([voice]).format([voice], WIDTH);
+                    voice.draw(context, treble_stave_1);
+                }
 
             	if (s2 != null) {
 	            	var note = [new VF.StaveNote({clef: "treble", keys: [s2], duration: "w"})];
