@@ -100,7 +100,7 @@
 		var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
 
 		// Configure the rendering context.
-		renderer.resize(820, 300);
+		renderer.resize(820, 250);
 
 		// Drawing context:
 		var context = renderer.getContext();
@@ -358,10 +358,21 @@
                     return result;
                 }
 
-                // ********************
                 // Check for parallel fifths
-                // ********************
                 function parallelFifths (midi1, midi2, midi3, midi4) {
+                    // Root position (7, 19, 31, 43 semitone separation)
+                    var result = false;
+                    
+                    // *********************
+                    // ********************* Fix logic. Only works when =7
+                    // *********************
+                    if (((midi1 - midi3) == (7 || 19 || 31 || 43)) && // Checks for perfect fifth in first measure.
+                        ((midi2 - midi4) == (7 || 19 || 31 || 43))) // Checks for perfect fifth in second measure.
+                        {
+                        result = true;
+                    }
+
+                    return result;
 
                 }
 
@@ -399,83 +410,104 @@
 
 
                 // EXECUTE FUNCTIONS BETWEEN VOICES
-                // ******************
-                // Fix new line issue
-                // ******************
         		// Soprano and alto
-        		if (parallelOctaves(s1, s2, a1, a2)) { output = output + "Parallel octaves between measures 1 and 2 (soprano and alto).\n";}
-                if (parallelOctaves(s2, s3, a2, a3)) { output = output + "Parallel octaves between measures 2 and 3 (soprano and alto).\n";}
-                if (parallelOctaves(s3, s4, a3, a4)) { output = output + "Parallel octaves between measures 3 and 4 (soprano and alto).\n";}
+        		if (parallelOctaves(s1, s2, a1, a2)) { output = output + "Parallel octaves between measures 1 and 2 (soprano and alto).<br />";}
+                if (parallelOctaves(s2, s3, a2, a3)) { output = output + "Parallel octaves between measures 2 and 3 (soprano and alto).<br />";}
+                if (parallelOctaves(s3, s4, a3, a4)) { output = output + "Parallel octaves between measures 3 and 4 (soprano and alto).<br />";}
 
-                if (voiceCrossing(s1_midi, a1_midi)) { output = output + "Voice crossing in measure 1 (soprano and alto).\n";}
-                if (voiceCrossing(s2_midi, a2_midi)) { output = output + "Voice crossing in measure 2 (soprano and alto).\n";}
-                if (voiceCrossing(s3_midi, a3_midi)) { output = output + "Voice crossing in measure 3 (soprano and alto).\n";}
-                if (voiceCrossing(s4_midi, a4_midi)) { output = output + "Voice crossing in measure 4 (soprano and alto).\n";}
+                if (parallelFifths(s1_midi, s2_midi, a1_midi, a2_midi)) { output = output + "Parallel fifths between measures 1 and 2 (soprano and alto).<br />";}
+                if (parallelFifths(s2_midi, s3_midi, a2_midi, a3_midi)) { output = output + "Parallel fifths between measures 2 and 3 (soprano and alto).<br />";}
+                if (parallelFifths(s3_midi, s4_midi, a3_midi, a4_midi)) { output = output + "Parallel fifths between measures 3 and 4 (soprano and alto).<br />";}
 
-                if (distance(s1_midi, a1_midi)) { output = output + "Voices are too far apart in measure 1 (soprano and alto).\n";}
-                if (distance(s2_midi, a2_midi)) { output = output + "Voices are too far apart in measure 2 (soprano and alto).\n";}
-                if (distance(s3_midi, a3_midi)) { output = output + "Voices are too far apart in measure 3 (soprano and alto).\n";}
-                if (distance(s4_midi, a4_midi)) { output = output + "Voices are too far apart in measure 4 (soprano and alto).\n";}
+                if (voiceCrossing(s1_midi, a1_midi)) { output = output + "Voice crossing in measure 1 (soprano and alto).<br />";}
+                if (voiceCrossing(s2_midi, a2_midi)) { output = output + "Voice crossing in measure 2 (soprano and alto).<br />";}
+                if (voiceCrossing(s3_midi, a3_midi)) { output = output + "Voice crossing in measure 3 (soprano and alto).<br />";}
+                if (voiceCrossing(s4_midi, a4_midi)) { output = output + "Voice crossing in measure 4 (soprano and alto).<br />";}
+
+                if (distance(s1_midi, a1_midi)) { output = output + "Voices are too far apart in measure 1 (soprano and alto).<br />";}
+                if (distance(s2_midi, a2_midi)) { output = output + "Voices are too far apart in measure 2 (soprano and alto).<br />";}
+                if (distance(s3_midi, a3_midi)) { output = output + "Voices are too far apart in measure 3 (soprano and alto).<br />";}
+                if (distance(s4_midi, a4_midi)) { output = output + "Voices are too far apart in measure 4 (soprano and alto).<br />";}
 
                 // Soprano and tenor
-        	    if (parallelOctaves(s1, s2, t1, t2)) { output = output + "Parallel octaves between measures 1 and 2 (soprano and tenor).\n";}
-                if (parallelOctaves(s2, s3, t2, t3)) { output = output + "Parallel octaves between measures 2 and 3 (soprano and tenor).\n";}
-                if (parallelOctaves(s3, s4, t3, t4)) { output = output + "Parallel octaves between measures 3 and 4 (soprano and tenor).\n";}
+        	    if (parallelOctaves(s1, s2, t1, t2)) { output = output + "Parallel octaves between measures 1 and 2 (soprano and tenor).<br />";}
+                if (parallelOctaves(s2, s3, t2, t3)) { output = output + "Parallel octaves between measures 2 and 3 (soprano and tenor).<br />";}
+                if (parallelOctaves(s3, s4, t3, t4)) { output = output + "Parallel octaves between measures 3 and 4 (soprano and tenor).<br />";}
 
-                if (voiceCrossing(s1_midi, t1_midi)) { output = output + "Voice crossing in measure 1 (soprano and tenor).\n";}
-                if (voiceCrossing(s2_midi, t2_midi)) { output = output + "Voice crossing in measure 2 (soprano and tenor).\n";}
-                if (voiceCrossing(s3_midi, t3_midi)) { output = output + "Voice crossing in measure 3 (soprano and tenor).\n";}
-                if (voiceCrossing(s4_midi, t4_midi)) { output = output + "Voice crossing in measure 4 (soprano and tenor).\n";}
+                if (parallelFifths(s1_midi, s2_midi, t1_midi, t2_midi)) { output = output + "Parallel fifths between measures 1 and 2 (soprano and tenor).<br />";}
+                if (parallelFifths(s2_midi, s3_midi, t2_midi, t3_midi)) { output = output + "Parallel fifths between measures 2 and 3 (soprano and tenor).<br />";}
+                if (parallelFifths(s3_midi, s4_midi, t3_midi, t4_midi)) { output = output + "Parallel fifths between measures 3 and 4 (soprano and tenor).<br />";}
+
+                if (voiceCrossing(s1_midi, t1_midi)) { output = output + "Voice crossing in measure 1 (soprano and tenor).<br />";}
+                if (voiceCrossing(s2_midi, t2_midi)) { output = output + "Voice crossing in measure 2 (soprano and tenor).<br />";}
+                if (voiceCrossing(s3_midi, t3_midi)) { output = output + "Voice crossing in measure 3 (soprano and tenor).<br />";}
+                if (voiceCrossing(s4_midi, t4_midi)) { output = output + "Voice crossing in measure 4 (soprano and tenor).<br />";}
 
         	    // Soprano and bass
-                if (parallelOctaves(s1, s2, b1, b2)) { output = output + "Parallel octaves between measures 1 and 2 (soprano and bass).\n";}
-                if (parallelOctaves(s2, s3, b2, b3)) { output = output + "Parallel octaves between measures 2 and 3 (soprano and bass).\n";}
-                if (parallelOctaves(s3, s4, b3, b4)) { output = output + "Parallel octaves between measures 3 and 4 (soprano and bass).\n";}
+                if (parallelOctaves(s1, s2, b1, b2)) { output = output + "Parallel octaves between measures 1 and 2 (soprano and bass).<br />";}
+                if (parallelOctaves(s2, s3, b2, b3)) { output = output + "Parallel octaves between measures 2 and 3 (soprano and bass).<br />";}
+                if (parallelOctaves(s3, s4, b3, b4)) { output = output + "Parallel octaves between measures 3 and 4 (soprano and bass).<br />";}
 
-                if (voiceCrossing(s1_midi, b1_midi)) { output = output + "Voice crossing in measure 1 (soprano and bass).\n";}
-                if (voiceCrossing(s2_midi, b2_midi)) { output = output + "Voice crossing in measure 2 (soprano and bass).\n";}
-                if (voiceCrossing(s3_midi, b3_midi)) { output = output + "Voice crossing in measure 3 (soprano and bass).\n";}
-                if (voiceCrossing(s4_midi, b4_midi)) { output = output + "Voice crossing in measure 4 (soprano and bass).\n";}
+                if (parallelFifths(s1_midi, s2_midi, b1_midi, b2_midi)) { output = output + "Parallel fifths between measures 1 and 2 (soprano and bass).<br />";}
+                if (parallelFifths(s2_midi, s3_midi, b2_midi, b3_midi)) { output = output + "Parallel fifths between measures 2 and 3 (soprano and bass).<br />";}
+                if (parallelFifths(s3_midi, s4_midi, b3_midi, b4_midi)) { output = output + "Parallel fifths between measures 3 and 4 (soprano and bass).<br />";}
+
+                if (voiceCrossing(s1_midi, b1_midi)) { output = output + "Voice crossing in measure 1 (soprano and bass).<br />";}
+                if (voiceCrossing(s2_midi, b2_midi)) { output = output + "Voice crossing in measure 2 (soprano and bass).<br />";}
+                if (voiceCrossing(s3_midi, b3_midi)) { output = output + "Voice crossing in measure 3 (soprano and bass).<br />";}
+                if (voiceCrossing(s4_midi, b4_midi)) { output = output + "Voice crossing in measure 4 (soprano and bass).<br />";}
                 
                 // Alto and tenor
-                if (parallelOctaves(a1, a2, t1, t2)) { output = output + "Parallel octaves between measures 1 and 2 (alto and tenor).\n";}
-                if (parallelOctaves(a2, a3, t2, t3)) { output = output + "Parallel octaves between measures 2 and 3 (alto and tenor).\n";}
-                if (parallelOctaves(a3, a4, t3, t4)) { output = output + "Parallel octaves between measures 3 and 4 (alto and tenor).\n";}
+                if (parallelOctaves(a1, a2, t1, t2)) { output = output + "Parallel octaves between measures 1 and 2 (alto and tenor).<br />";}
+                if (parallelOctaves(a2, a3, t2, t3)) { output = output + "Parallel octaves between measures 2 and 3 (alto and tenor).<br />";}
+                if (parallelOctaves(a3, a4, t3, t4)) { output = output + "Parallel octaves between measures 3 and 4 (alto and tenor).<br />";}
 
-                if (voiceCrossing(a1_midi, t1_midi)) { output = output + "Voice crossing in measure 1 (alto and tenor).\n";}
-                if (voiceCrossing(a2_midi, t2_midi)) { output = output + "Voice crossing in measure 2 (alto and tenor).\n";}
-                if (voiceCrossing(a3_midi, t3_midi)) { output = output + "Voice crossing in measure 3 (alto and tenor).\n";}
-                if (voiceCrossing(a4_midi, t4_midi)) { output = output + "Voice crossing in measure 4 (alto and tenor).\n";}
+                if (parallelFifths(a1_midi, a2_midi, t1_midi, t2_midi)) { output = output + "Parallel fifths between measures 1 and 2 (alto and tenor).<br />";}
+                if (parallelFifths(a2_midi, a3_midi, t2_midi, t3_midi)) { output = output + "Parallel fifths between measures 2 and 3 (alto and tenor).<br />";}
+                if (parallelFifths(a3_midi, a4_midi, t3_midi, t4_midi)) { output = output + "Parallel fifths between measures 3 and 4 (alto and tenor).<br />";}
 
-                if (distance(a1_midi, t1_midi)) { output = output + "Voices are too far apart in measure 1 (alto and tenor).\n";}
-                if (distance(a2_midi, t2_midi)) { output = output + "Voices are too far apart in measure 2 (alto and tenor).\n";}
-                if (distance(a3_midi, t3_midi)) { output = output + "Voices are too far apart in measure 3 (alto and tenor).\n";}
-                if (distance(a4_midi, t4_midi)) { output = output + "Voices are too far apart in measure 4 (alto and tenor).\n";}
+                if (voiceCrossing(a1_midi, t1_midi)) { output = output + "Voice crossing in measure 1 (alto and tenor).<br />";}
+                if (voiceCrossing(a2_midi, t2_midi)) { output = output + "Voice crossing in measure 2 (alto and tenor).<br />";}
+                if (voiceCrossing(a3_midi, t3_midi)) { output = output + "Voice crossing in measure 3 (alto and tenor).<br />";}
+                if (voiceCrossing(a4_midi, t4_midi)) { output = output + "Voice crossing in measure 4 (alto and tenor).<br />";}
+
+                if (distance(a1_midi, t1_midi)) { output = output + "Voices are too far apart in measure 1 (alto and tenor).<br />";}
+                if (distance(a2_midi, t2_midi)) { output = output + "Voices are too far apart in measure 2 (alto and tenor).<br />";}
+                if (distance(a3_midi, t3_midi)) { output = output + "Voices are too far apart in measure 3 (alto and tenor).<br />";}
+                if (distance(a4_midi, t4_midi)) { output = output + "Voices are too far apart in measure 4 (alto and tenor).<br />";}
 
                 // Alto and bass
-                if (parallelOctaves(a1, a2, b1, b2)) { output = output + "Parallel octaves between measures 1 and 2 (alto and bass).\n";}
-                if (parallelOctaves(a2, a3, b2, b3)) { output = output + "Parallel octaves between measures 2 and 3 (alto and bass).\n";}
-                if (parallelOctaves(a3, a4, b3, b4)) { output = output + "Parallel octaves between measures 3 and 4 (alto and bass).\n";}
+                if (parallelOctaves(a1, a2, b1, b2)) { output = output + "Parallel octaves between measures 1 and 2 (alto and bass).<br />";}
+                if (parallelOctaves(a2, a3, b2, b3)) { output = output + "Parallel octaves between measures 2 and 3 (alto and bass).<br />";}
+                if (parallelOctaves(a3, a4, b3, b4)) { output = output + "Parallel octaves between measures 3 and 4 (alto and bass).<br />";}
 
-                if (voiceCrossing(a1_midi, b1_midi)) { output = output + "Voice crossing in measure 1 (alto and bass).\n";}
-                if (voiceCrossing(a2_midi, b2_midi)) { output = output + "Voice crossing in measure 2 (alto and bass).\n";}
-                if (voiceCrossing(a3_midi, b3_midi)) { output = output + "Voice crossing in measure 3 (alto and bass).\n";}
-                if (voiceCrossing(a4_midi, b4_midi)) { output = output + "Voice crossing in measure 4 (alto and bass).\n";}
+                if (parallelFifths(a1_midi, a2_midi, b1_midi, b2_midi)) { output = output + "Parallel fifths between measures 1 and 2 (alto and bass).<br />";}
+                if (parallelFifths(a2_midi, a3_midi, b2_midi, b3_midi)) { output = output + "Parallel fifths between measures 2 and 3 (alto and bass).<br />";}
+                if (parallelFifths(a3_midi, a4_midi, b3_midi, b4_midi)) { output = output + "Parallel fifths between measures 3 and 4 (alto and bass).<br />";}
+
+                if (voiceCrossing(a1_midi, b1_midi)) { output = output + "Voice crossing in measure 1 (alto and bass).<br />";}
+                if (voiceCrossing(a2_midi, b2_midi)) { output = output + "Voice crossing in measure 2 (alto and bass).<br />";}
+                if (voiceCrossing(a3_midi, b3_midi)) { output = output + "Voice crossing in measure 3 (alto and bass).<br />";}
+                if (voiceCrossing(a4_midi, b4_midi)) { output = output + "Voice crossing in measure 4 (alto and bass).<br />";}
 
                 // Tenor and bass
-                if (parallelOctaves(t1, t2, b1, b2)) { output = output + "Parallel octaves between measures 1 and 2 (tenor and bass).\n";}
-                if (parallelOctaves(t2, t3, b2, b3)) { output = output + "Parallel octaves between measures 2 and 3 (tenor and bass).\n";}
-                if (parallelOctaves(t3, t4, b3, b4)) { output = output + "Parallel octaves between measures 3 and 4 (tenor and bass).\n";}
+                if (parallelOctaves(t1, t2, b1, b2)) { output = output + "Parallel octaves between measures 1 and 2 (tenor and bass).<br />";}
+                if (parallelOctaves(t2, t3, b2, b3)) { output = output + "Parallel octaves between measures 2 and 3 (tenor and bass).<br />";}
+                if (parallelOctaves(t3, t4, b3, b4)) { output = output + "Parallel octaves between measures 3 and 4 (tenor and bass).<br />";}
 
-                if (voiceCrossing(t1_midi, b1_midi)) { output = output + "Voice crossing in measure 1 (tenor and bass).\n";}
-                if (voiceCrossing(t2_midi, b2_midi)) { output = output + "Voice crossing in measure 2 (tenor and bass).\n";}
-                if (voiceCrossing(t3_midi, b3_midi)) { output = output + "Voice crossing in measure 3 (tenor and bass).\n";}
-                if (voiceCrossing(t4_midi, b4_midi)) { output = output + "Voice crossing in measure 4 (tenor and bass).\n";}
+                if (parallelFifths(t1_midi, t2_midi, b1_midi, b2_midi)) { output = output + "Parallel fifths between measures 1 and 2 (tenor and bass).<br />";}
+                if (parallelFifths(t2_midi, t3_midi, b2_midi, b3_midi)) { output = output + "Parallel fifths between measures 2 and 3 (tenor and bass).<br />";}
+                if (parallelFifths(t3_midi, t4_midi, b3_midi, b4_midi)) { output = output + "Parallel fifths between measures 3 and 4 (tenor and bass).<br />";}
 
-                if (distanceTB(t1_midi, b1_midi)) { output = output + "Voices are too far apart in measure 1 (tenor and bass).\n";}
-                if (distanceTB(t2_midi, b2_midi)) { output = output + "Voices are too far apart in measure 2 (tenor and bass).\n";}
-                if (distanceTB(t3_midi, b3_midi)) { output = output + "Voices are too far apart in measure 3 (tenor and bass).\n";}
-                if (distanceTB(t4_midi, b4_midi)) { output = output + "Voices are too far apart in measure 4 (tenor and bass).\n";}
+                if (voiceCrossing(t1_midi, b1_midi)) { output = output + "Voice crossing in measure 1 (tenor and bass).<br />";}
+                if (voiceCrossing(t2_midi, b2_midi)) { output = output + "Voice crossing in measure 2 (tenor and bass).<br />";}
+                if (voiceCrossing(t3_midi, b3_midi)) { output = output + "Voice crossing in measure 3 (tenor and bass).<br />";}
+                if (voiceCrossing(t4_midi, b4_midi)) { output = output + "Voice crossing in measure 4 (tenor and bass).<br />";}
+
+                if (distanceTB(t1_midi, b1_midi)) { output = output + "Voices are too far apart in measure 1 (tenor and bass).<br />";}
+                if (distanceTB(t2_midi, b2_midi)) { output = output + "Voices are too far apart in measure 2 (tenor and bass).<br />";}
+                if (distanceTB(t3_midi, b3_midi)) { output = output + "Voices are too far apart in measure 3 (tenor and bass).<br />";}
+                if (distanceTB(t4_midi, b4_midi)) { output = output + "Voices are too far apart in measure 4 (tenor and bass).<br />";}
         	}
 
 
