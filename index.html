@@ -7,6 +7,8 @@
 </head>
 <body>
 
+	<img src="HarmonanaLogo.gif" width="80%" height="80%">
+
 <!--Create a table of options for voice selection-->
 	<table>
 		<tbody>
@@ -53,47 +55,15 @@
 		var B_COLOR = "orange";
 
 		// Values for analysis and for determining if group should be removed within the click function (value != null)
-		var s1 = null;
-		var s2 = null;
-		var s3 = null;
-		var s4 = null;
+		var s1 = null, s2 = null, s3 = null, s4 = null;
+		var a1 = null, a2 = null, a3 = null, a4 = null;
+		var t1 = null, t2 = null, t3 = null, t4 = null;
+		var b1 = null, b2 = null, b3 = null, b4 = null;
 
-		var a1 = null;
-		var a2 = null;
-		var a3 = null;
-		var a4 = null;
-
-		var t1 = null;
-		var t2 = null;
-		var t3 = null;
-		var t4 = null;
-
-		var b1 = null;
-		var b2 = null;
-		var b3 = null;
-		var b4 = null;
-
-        var s1_midi = null;
-        var s2_midi = null;
-        var s3_midi = null;
-        var s4_midi = null;
-
-        var a1_midi = null;
-        var a2_midi = null;
-        var a3_midi = null;
-        var a4_midi = null;
-
-        var t1_midi = null;
-        var t2_midi = null;
-        var t3_midi = null;
-        var t4_midi = null;
-
-        var b1_midi = null;
-        var b2_midi = null;
-        var b3_midi = null;
-        var b4_midi = null;
-
-
+        var s1_midi = null, s2_midi = null, s3_midi = null, s4_midi = null;
+        var a1_midi = null, a2_midi = null, a3_midi = null, a4_midi = null;
+        var t1_midi = null, t2_midi = null, t3_midi = null, t4_midi = null;
+        var b1_midi = null, b2_midi = null, b3_midi = null, b4_midi = null;
 
 		// Create an SVG renderer and attach it to the DIV element named "boo".
 		var div = document.getElementById("boo");
@@ -106,7 +76,7 @@
 		var context = renderer.getContext();
 		context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
 
-		// Create a stave of width 400 at position 10, 40 on the canvas.
+		// Create four staves for both treble and bass clefs.
 		var treble_stave_1 = new VF.Stave(10, 40, WIDTH);
 		var bass_stave_1 = new VF.Stave(10, 100, WIDTH);
 
@@ -118,7 +88,6 @@
 
 		var treble_stave_4 = new VF.Stave(610, 40, WIDTH);
 		var bass_stave_4 = new VF.Stave(610, 100, WIDTH);
-
 
 		// Add a clef and time signature.
 		treble_stave_1.addClef("treble").addTimeSignature("4/4");
@@ -148,29 +117,15 @@
         var group = context.openGroup();
 
         // Used to separate sections within the click method.
-        var group_s1 = null;
-        var group_s2 = null;
-        var group_s3 = null;
-        var group_s4 = null;
-
-        var group_a1 = null;
-        var group_a2 = null;
-        var group_a3 = null;
-        var group_a4 = null;
-
-        var group_t1 = null;
-        var group_t2 = null;
-        var group_t3 = null;
-        var group_t4 = null;
-
-        var group_b1 = null;
-        var group_b2 = null;
-        var group_b3 = null;
-        var group_b4 = null;
+        var group_s1 = null, group_s2 = null, group_s3 = null, group_s4 = null;
+        var group_a1 = null, group_a2 = null, group_a3 = null, group_a4 = null;
+        var group_t1 = null, group_t2 = null, group_t3 = null, group_t4 = null;
+        var group_b1 = null, group_b2 = null, group_b3 = null, group_b4 = null;
 
         // Draw your measure as you normally would:
         var voice = new VF.Voice({num_beats: 4, beat_value: 4});
         voice.addTickables(notes);
+
         // Format and justify the notes to 400 pixels:
         var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 750);
         // Render voice
@@ -366,8 +321,8 @@
                     // *********************
                     // ********************* Fix logic. Only works when =7
                     // *********************
-                    if (((midi1 - midi3) == (7 || 19 || 31 || 43)) && // Checks for perfect fifth in first measure.
-                        ((midi2 - midi4) == (7 || 19 || 31 || 43))) // Checks for perfect fifth in second measure.
+                    if (((midi1 - midi3 == 7) || (midi1 - midi3 == 19) || (midi1 - midi3 == 31) || (midi1 - midi3 == 43)) && // Checks for perfect fifth in first measure.
+                        ((midi2 - midi4 == 7) || (midi2 - midi4 == 19) || (midi2 - midi4 == 31) || (midi2 - midi4 == 43)) && (midi1 != midi2 || midi3 != midi4)) // Checks for perfect fifth in second measure.
                         {
                         result = true;
                     }
@@ -510,14 +465,12 @@
                 if (distanceTB(t4_midi, b4_midi)) { output = output + "Voices are too far apart in measure 4 (tenor and bass).<br />";}
         	}
 
-
         	// Create output if no issues found.
         	if (output == ""){
         		output = "No issues found."
         	}
         	return output;
       	}
-
 
 
         //  On Vexflow SVG click (content renderer)
@@ -824,6 +777,7 @@
 
 	</script>
 	<button id="Analyze" onclick="document.getElementById('Output').innerHTML=analyzeNotes()">Analyze</button>
+	<br><br>
 	<div id="Output"></div>
 </body>
 </html>
