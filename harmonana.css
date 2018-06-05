@@ -1,15 +1,50 @@
+body {
+	background: #f9f4c7;
+	font-family: "verdana";
+}
+
+table {
+	border-collapse: collapse;
+	border: 1px solid black;
+	position: relative;
+	top: 78px;
+}
+
+td {
+	padding: 2px;
+}
+
+nav {
+	float: left;
+}
+
+#header {
+	width: 700px;
+}
+
+#boo {}
+
 #SOPRANO {
-	color: red;	
+	color: white;
+	background: red;
 }
 
 #ALTO {
-	color: blue;
+	color: white;
+	background: blue;
 }
 
 #TENOR {
-	color: green;
+	color: white;
+	background: green;
 }
 
 #BASS {
-	color: orange;
+	color: white;
+	background: orange;
+}
+
+.button {
+	font-size: 40px; /*no work*/
+	font-family: "verdana";
 }

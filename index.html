@@ -6,30 +6,33 @@
 
 </head>
 <body>
-
-	<img src="HarmonanaLogo.gif" width="80%" height="80%">
+    <div id="header">
+	   <img src="HarmonanaLogo.gif" width="80%" height="80%">
+    </div>
 
 <!--Create a table of options for voice selection-->
-	<table>
-		<tbody>
-			<tr id="SOPRANO">
-				<td><label for="soprano">Soprano: </label></td>
-				<td><input type="radio" name="voice" id="soprano" checked></td>
-			</tr>
-			<tr id="ALTO">
-				<td><label for="alto">Alto: </label></td>
-				<td><input type="radio" name="voice" id="alto"></td>
-			</tr>
-			<tr id="TENOR">
-				<td><label for="tenor">Tenor: </label></td>
-				<td><input type="radio" name="voice" id="tenor"></td>
-			</tr>
-			<tr id="BASS">
-				<td><label for="bass">Bass: </label></td>
-				<td><input type="radio" name="voice" id="bass"></td>
-			</tr>
-		</tbody>
-	</table>
+    <nav id="voiceSelection">
+    	<table>
+    		<tbody>
+    			<tr id="SOPRANO">
+    				<td id="soplabel"><label for="soprano">Soprano: </label></td>
+    				<td><input type="radio" name="voice" id="soprano" checked></td>
+    			</tr>
+    			<tr id="ALTO">
+    				<td id="altlabel"><label for="alto">Alto: </label></td>
+    				<td><input type="radio" name="voice" id="alto"></td>
+    			</tr>
+    			<tr id="TENOR">
+    				<td id="tenlabel"><label for="tenor">Tenor: </label></td>
+    				<td><input type="radio" name="voice" id="tenor"></td>
+    			</tr>
+    			<tr id="BASS">
+    				<td id="basslabel"><label for="bass">Bass: </label></td>
+    				<td><input type="radio" name="voice" id="bass"></td>
+    			</tr>
+    		</tbody>
+    	</table>
+    </nav>
 
 
 <!-- container used for VexFlow -->
@@ -46,7 +49,8 @@
 		VF = Vex.Flow;
 
 		// Width of each measure
-		const WIDTH = 200;
+		const WIDTH = 130;
+        const FIRST_WIDTH = WIDTH + 40;
 
 		// Variables for assigning colors to voices
 		var S_COLOR = "red";
@@ -70,24 +74,24 @@
 		var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
 
 		// Configure the rendering context.
-		renderer.resize(820, 250);
+		renderer.resize(WIDTH*3 + FIRST_WIDTH + 20, 250);
 
 		// Drawing context:
 		var context = renderer.getContext();
 		context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
 
 		// Create four staves for both treble and bass clefs.
-		var treble_stave_1 = new VF.Stave(10, 40, WIDTH);
-		var bass_stave_1 = new VF.Stave(10, 100, WIDTH);
+		var treble_stave_1 = new VF.Stave(10, 40, FIRST_WIDTH);
+		var bass_stave_1 = new VF.Stave(10, 100, FIRST_WIDTH);
 
-		var treble_stave_2 = new VF.Stave(210, 40, WIDTH);
-		var bass_stave_2 = new VF.Stave(210, 100, WIDTH);
+		var treble_stave_2 = new VF.Stave((FIRST_WIDTH + 10), 40, WIDTH);
+		var bass_stave_2 = new VF.Stave((FIRST_WIDTH + 10), 100, WIDTH);
 
-		var treble_stave_3 = new VF.Stave(410, 40, WIDTH);
-		var bass_stave_3 = new VF.Stave(410, 100, WIDTH);
+		var treble_stave_3 = new VF.Stave((FIRST_WIDTH + WIDTH + 10), 40, WIDTH);
+		var bass_stave_3 = new VF.Stave((FIRST_WIDTH + WIDTH + 10), 100, WIDTH);
 
-		var treble_stave_4 = new VF.Stave(610, 40, WIDTH);
-		var bass_stave_4 = new VF.Stave(610, 100, WIDTH);
+		var treble_stave_4 = new VF.Stave((FIRST_WIDTH + WIDTH*2 + 10), 40, WIDTH);
+		var bass_stave_4 = new VF.Stave((FIRST_WIDTH + WIDTH*2 + 10), 100, WIDTH);
 
 		// Add a clef and time signature.
 		treble_stave_1.addClef("treble").addTimeSignature("4/4");
@@ -271,13 +275,13 @@
             // determine which of 4 measures you're in based on x position (horizontal)
         	var measure = null;
 
-        	if (x > 10 & x < 210) {
+        	if (x > 10 & x < (FIRST_WIDTH + 10)) {
         		measure = treble_stave_1;
-        	} else if (x >= 210 & x < 410) {
+        	} else if (x >= (FIRST_WIDTH + 10) & x < (FIRST_WIDTH + WIDTH + 10)) {
         		measure = treble_stave_2;
-        	} else if (x >= 410 & x < 610) {
+        	} else if (x >= (FIRST_WIDTH + WIDTH + 10) & x < (FIRST_WIDTH + WIDTH*2 + 10)) {
         		measure = treble_stave_3;
-        	} else if (x >= 610 & x < 810) {
+        	} else if (x >= (FIRST_WIDTH + WIDTH*2 + 10) & x < (FIRST_WIDTH + WIDTH*3 + 10)) {
         		measure = treble_stave_4;
         	}
         	return measure;
@@ -318,9 +322,6 @@
                     // Root position (7, 19, 31, 43 semitone separation)
                     var result = false;
                     
-                    // *********************
-                    // ********************* Fix logic. Only works when =7
-                    // *********************
                     if (((midi1 - midi3 == 7) || (midi1 - midi3 == 19) || (midi1 - midi3 == 31) || (midi1 - midi3 == 43)) && // Checks for perfect fifth in first measure.
                         ((midi2 - midi4 == 7) || (midi2 - midi4 == 19) || (midi2 - midi4 == 31) || (midi2 - midi4 == 43)) && (midi1 != midi2 || midi3 != midi4)) // Checks for perfect fifth in second measure.
                         {
@@ -607,7 +608,9 @@
                 // remove previous group:
                 context.svg.removeChild(group);
                 group = context.openGroup();
-                voice.draw(context, getMeasure(offsetX));
+                if (getMeasure(offsetX)!=null) {
+                    voice.draw(context, getMeasure(offsetX));
+                }
 
                 // *********************
                 // ********************* Create method for these
